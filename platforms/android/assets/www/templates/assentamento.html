@@ -1,0 +1,74 @@
+<ion-pane>
+    <ion-header-bar class="bar bar-header bar-positive">
+      <h1 class="title"><center>ORDEM DE SERVIÇO Nº {{titulo}}</center></h1>
+    </ion-header-bar>
+    <div></div>
+      <ion-content>
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" id="im" placeholder="inscrição municipal" maxlength="8" ng-model="im">
+            </label>
+
+
+            <button class="button button-full button-assertive" ng-click='buscar()' ng-disabled='proteger'>
+            buscar
+            </button>
+            
+            <button class="button button-full button-assertive" ng-click="limpar()">
+            limpar
+            </button>
+
+            <label class="item item-input">
+                <input type="text" id="titular" ng-model="titular" placeholder="nome do titular" ng-disabled='proteger'>
+            </label>
+
+            <label class="item item-input">
+                <input type="text" id="preposto" ng-model="preposto" placeholder="nome do preposto" ng-disabled='proteger'>
+            </label>
+
+            <label class="item item-input">
+                <input type="text" id="situacao" ng-model="situacao" placeholder="situação" ng-disabled='proteger'>
+            </label>
+
+            <div class="list">
+
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Status
+                    </div>
+
+                            <select ng-model="status" id="status" ng-change='selecionar()'>
+                            <option ng-repeat = 'l in listaEscolha'>{{l}}</option>
+                            
+                            </select>
+
+                </label>
+            </div>
+
+            <button class="button button-full button-assertive"  ng-show='clickInconformidade' ng-click='multar()'>
+            Lançar infração
+            </button>
+
+            <button class="button button-full button-assertive" ng-show='clickConformidade' ng-click='novaFiscalizacao()'>
+            Salvar
+            </button>
+
+            <button class="button button-full button-assertive" ng-show='clickEncerrar' ng-click='encerrar()'>
+            Encerrar
+            </button>
+
+             <button class="button button-full button-assertive" ng-show='clickVistoria' ng-click='vistoriar()'>
+            Vistoriar
+            </button>
+
+             <button class="button button-full button-assertive" ng-show='clickSolicitar' ng-click='solicitar()'>
+            Solicitar
+            </button>
+
+
+        </div>
+
+
+    </ion-pane>
+
