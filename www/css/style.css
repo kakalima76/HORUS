@@ -12,3 +12,13 @@
 	text-align: justify;
 	padding: 7px;
 }
+
+.logo{
+	width: 45%;
+	height: 45%;
+	padding-top: 4%;
+}
+
+.corpo{
+	background: #000080;
+}
