@@ -1,0 +1,38 @@
+<ion-view>
+	<ion-header-bar class="bar bar-header bar-positive">
+    <h1 class="title"><center>ORDEM DE SERVIÇO</center></h1>
+    </ion-header-bar>
+
+    
+<ion-content>
+  <ion-refresher
+  pulling-text="Puxe para retornar..."
+  on-refresh="doRefresh()">
+  </ion-refresher>
+  
+        <div class="list" ng-show='showMostrar' class='ng-hide'>
+        <div class="item item-divider texto" ><center>STATUS</center></div>
+        <a class="item conteudo">{{status}}</a>
+        <div class="item item-divider texto" ><center>DIA</center></div>
+        <a class="item conteudo">{{data}}</a>
+        <div class="item item-divider texto" ><center>APRESENTAÇÃO</center></div>
+        <a class="item conteudo">{{apresentacao}}</a>
+        <div class="item item-divider texto" ><center>TÉRMINO</center></div>
+        <a class="item conteudo">{{termino}}</a>      
+        
+        <div class="item item-divider texto" ng-model="chefia" ng-disabled="disabledChefia" ng-click='clicar()'><center ng-disabled="disabledChefia" >CHEFIA</center></div>
+        <a class="item conteudo" ng-repeat='c in chefias'>{{c}}</a>
+        <div class="item item-divider texto" ><center>EQUIPE</center></div>
+        <a class="item conteudo" ng-repeat='e in equipes'>{{e}}</a>
+        <div class="item item-divider texto"><center>AÇÃO PROGRAMADA</center></div>
+        <label class="item item-input" ng-repeat='a in acaos'>
+        <textarea class="textarea" rows="6" readonly="readonly">{{a}}</textarea>
+        </label>
+        <div class="item item-divider texto"><center>VIATURA</center></div>
+        <a class="item conteudo" ng-repeat='v in viaturas'>{{v}}</a>
+        <div class="item item-divider texto"><center>AGENTE</center></div>
+        <a class="item conteudo" ng-repeat='a in agentes'>{{a}}</a>       
+        </div>
+</ion-content>
+        
+</ion-view>

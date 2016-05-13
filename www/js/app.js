@@ -57,6 +57,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
     controller: 'solicitacaoCtrl'
   })
 
+  .state('numero', {
+    url: '/numero',
+    templateUrl: 'templates/numero.html',
+    controller: 'numeroCtrl'
+  })
+
   .state('apoio', {
     url: '/apoio',
     templateUrl: 'templates/apoio.html',

@@ -137,7 +137,7 @@ angular.module('starter.controllers', [])
       $scope.clickInconformidade = false;
       $scope.clickConformidade = false;
       $scope.clickEncerrar = true;
-      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'VISTORIA']
+      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'PREPOSTO', 'TERCEIROS', 'VISTORIA','VER OS']
       $scope.clickSolicitar = false;
       
       if(factoryAgente.getChefe()){
@@ -174,45 +174,62 @@ angular.module('starter.controllers', [])
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }else if (document.getElementById('status').value == 'VISTORIA'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = true
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }else if (document.getElementById('status').value == 'SOLICITAR'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = true;
+            $scope.clickVisualisar = false;
         }else if (!document.getElementById('status').value){
             $scope.clickInconformidade = false;
             $scope.clickConformidade = false;
             $scope.clickEncerrar = true;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
+        }else if (document.getElementById('status').value == 'VER OS'){
+            $scope.clickConformidade = false;
+            $scope.clickInconformidade = false;
+            $scope.clickEncerrar = false;
+            $scope.clickVistoria = false;
+            $scope.clickSolicitar = false;
+            $scope.clickVisualisar = true;
         }else{
             $scope.clickConformidade = true;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }
     };//fim do método selecionar
-
     var conformidade = function(){
       //vou aproveitar e atualizar o logado no objeto autorizado
       
-      var flag;
+     var flag;
       if(document.getElementById('status').value === 'INCONFORMIDADE'){
         flag = 'INCONFORME';
         factoryAutorizado.setEstado(flag);
       }else if(document.getElementById('status').value === 'CONFORMIDADE'){
         flag = 'CONFORME';
         factoryAutorizado.setEstado(flag);
-      }else {
+      }else if(document.getElementById('status').value === 'AUSENTE') {
         flag = 'AUSENTE';
+        factoryAutorizado.setEstado(flag);
+      }else if(document.getElementById('status').value === 'PREPOSTO') {
+        flag = 'PREPOSTO';
+        factoryAutorizado.setEstado(flag);
+      }else if(document.getElementById('status').value === 'TERCEIROS') {
+        flag = 'TERCEIROS';
         factoryAutorizado.setEstado(flag);
       }
 
@@ -264,6 +281,10 @@ angular.module('starter.controllers', [])
 
     $scope.solicitar = function(){
       $state.go('solicitacao');
+    }
+
+      $scope.visualisar = function(){
+      $state.go('numero');
     }
 
 }])
