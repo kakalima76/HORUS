@@ -2,7 +2,6 @@
     <ion-header-bar class="bar bar-header bar-positive">
       <h1 class="title"><center>ORDEM DE SERVIÇO Nº {{titulo}}</center></h1>
     </ion-header-bar>
-    <div></div>
       <ion-content class="corpo">
 
         <div class="list list-inset">
@@ -21,14 +20,6 @@
 
             <label class="item item-input">
                 <input type="text" id="titular" ng-model="titular" placeholder="nome do titular" ng-disabled='proteger'>
-            </label>
-
-            <label class="item item-input">
-                <input type="text" id="preposto" ng-model="preposto" placeholder="nome do preposto" ng-disabled='proteger'>
-            </label>
-
-            <label class="item item-input">
-                <input type="text" id="situacao" ng-model="situacao" placeholder="situação" ng-disabled='proteger'>
             </label>
 
             <div class="list">
@@ -66,8 +57,10 @@
             Solicitar
             </button>
 
-            <button class="button button-full button-positive" ng-show='clickVisualisar' ng-click='visualisar()'>
-            Ver OS
+            <button class="button button-full button-positive" ng-show='clickVisualisar' ng-click='visualisar()'>Ver OS
+            </button>
+
+            <button class="button button-full button-positive" ng-show='clickCuca' ng-click='pesquisar()'>SCCA
             </button>
 
 

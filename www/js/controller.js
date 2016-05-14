@@ -132,13 +132,14 @@ angular.module('starter.controllers', [])
 }])
 
 
-.controller('assentamentoCtrl', ['$scope', 'factoryAutorizado', '$state', 'tipificaService', 'loginFactory', 'factoryAgente', 'factoryLocaliza', 'factoryPontos', function($scope,  factoryAutorizado, $state, tipificaService, loginFactory, factoryAgente, factoryLocaliza, factoryPontos){
+.controller('assentamentoCtrl', ['inscricaofactory', '$scope', 'factoryAutorizado', '$state', 'tipificaService', 'loginFactory', 'factoryAgente', 'factoryLocaliza', 'factoryPontos', function(inscricaofactory, $scope,  factoryAutorizado, $state, tipificaService, loginFactory, factoryAgente, factoryLocaliza, factoryPontos){
       $scope.titulo = factoryAgente.getOrdem();
       $scope.clickInconformidade = false;
       $scope.clickConformidade = false;
-      $scope.clickEncerrar = true;
-      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'PREPOSTO', 'TERCEIROS', 'VISTORIA','VER OS']
+      $scope.clickEncerrar = false;
+      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'PREPOSTO', 'TERCEIROS', 'VISTORIA','VER OS', 'SCCA']
       $scope.clickSolicitar = false;
+      $scope.clickCuca = true;
       
       if(factoryAgente.getChefe()){
         $scope.listaEscolha.push('SOLICITAR');
@@ -148,8 +149,6 @@ angular.module('starter.controllers', [])
     $scope.buscar = function(){
 
         document.getElementById('titular').value = 'carregando...'
-        document.getElementById('situacao').value = 'carregando... '                     
-        document.getElementById('preposto').value =  'carregando...'
 
           factoryAutorizado.extrair(document.getElementById('im').value);
           factoryLocaliza.localiza();
@@ -162,8 +161,6 @@ angular.module('starter.controllers', [])
       $scope.proteger = false;
       document.getElementById("im").value = '';
       document.getElementById("titular").value = '';
-      document.getElementById("preposto").value = '';
-      document.getElementById('situacao').value = '';
       
     };//fim do método limpar
 
@@ -175,6 +172,7 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
             $scope.clickVisualisar = false;
+            $scope.clickCuca = false;
         }else if (document.getElementById('status').value == 'VISTORIA'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
@@ -182,6 +180,7 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = true
             $scope.clickSolicitar = false;
             $scope.clickVisualisar = false;
+            $scope.clickCuca = false;
         }else if (document.getElementById('status').value == 'SOLICITAR'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
@@ -189,6 +188,7 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = false;
             $scope.clickSolicitar = true;
             $scope.clickVisualisar = false;
+            $scope.clickCuca = false;
         }else if (!document.getElementById('status').value){
             $scope.clickInconformidade = false;
             $scope.clickConformidade = false;
@@ -196,6 +196,7 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
             $scope.clickVisualisar = false;
+            $scope.clickCuca = false;
         }else if (document.getElementById('status').value == 'VER OS'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
@@ -203,6 +204,15 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
             $scope.clickVisualisar = true;
+            $scope.clickCuca = false;
+        }else if (document.getElementById('status').value == 'SCCA'){
+            $scope.clickConformidade = false;
+            $scope.clickInconformidade = false;
+            $scope.clickEncerrar = false;
+            $scope.clickVistoria = false;
+            $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
+            $scope.clickCuca = true;
         }else{
             $scope.clickConformidade = true;
             $scope.clickInconformidade = false;
@@ -210,6 +220,7 @@ angular.module('starter.controllers', [])
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
             $scope.clickVisualisar = false;
+            $scope.clickCuca = false;
         }
     };//fim do método selecionar
     var conformidade = function(){
@@ -283,8 +294,20 @@ angular.module('starter.controllers', [])
       $state.go('solicitacao');
     }
 
-      $scope.visualisar = function(){
+    $scope.visualisar = function(){
       $state.go('numero');
+    }
+
+    $scope.pesquisar = function(){
+      var im = document.getElementById('im').value;
+      var nome = document.getElementById('titular').value;
+      if(im.length === 8 && nome.length > 0){
+        inscricaofactory.set(im);
+        $state.go('cuca');
+      }else{
+        alert('Busque a IM!');
+      }
+      
     }
 
 }])
@@ -555,18 +578,16 @@ angular.module('starter.controllers', [])
                                       var titular = nome[0].replace('Nome', '').replace('Data', '').trim();
                                       var cpf = cpfTitular[0].replace('CPF', '').trim();
                                       var local = localTitular[0].replace('Local', '').replace('nº', '').trim();
-                                      var situacao = statusTitular[0].replace('Situação', '').replace('TITULAR', '').trim() + ' (ÚLT. TUAP PAGA: ' + tuap[0].substring(10,20)+')';
-                                      document.getElementById('situacao').value = situacao;
+                                      var situacao = statusTitular[0].replace('Situação', '').replace('TITULAR', '').trim();
                                       
-                                           if(nome[01]){
+                                          if(nome[01]){
                                             var preposto =  nome[1].replace('Nome', '').replace('Data', '').trim();
                                             set(value, titular, preposto, cpf, local, situacao,'');
-                                            document.getElementById('preposto').value =  nome[1].replace('Nome', '').replace('Data', '').trim();
                                           }else{
                                             var preposto = 'SEM PREPOSTO';
                                             set(value, titular, preposto, cpf, local, situacao, false);
-                                            document.getElementById('preposto').value = 'SEM PREPOSTO';
                                           }
+
                                     }else{
                                       alert('IM não localizada!\nClique em Limpar para prosseguir.');
                                     }                                                           

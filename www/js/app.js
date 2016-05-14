@@ -23,7 +23,9 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider){
+.config(function($stateProvider, $urlRouterProvider, $sceProvider){
+  $sceProvider.enabled(false);
+  
   $stateProvider
   .state('assentamento', {
     url: '/assentamento',
@@ -61,6 +63,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'starter.controllers', 'starter
     url: '/numero',
     templateUrl: 'templates/numero.html',
     controller: 'numeroCtrl'
+  })
+
+  .state('cuca', {
+    url: '/cuca',
+    templateUrl: 'templates/cuca.html',
+    controller: 'cucaCtrl'
   })
 
   .state('apoio', {

@@ -3,7 +3,7 @@
       <h1 class="title"><center>SOLICITAÇÃO</center></h1>
     </ion-header-bar>
 
-    <ion-content>
+    <ion-content class="corpo">
     
 	<label class="item item-input">
   	<span class="input-label">Data</span>
@@ -32,21 +32,31 @@
   	<label class="item item-input">
     <textarea placeholder="Ponto de encontro" ng-model="ponto"  id="ponto"></textarea>
   	</label>
+  	<label class="item item-input item-select">
+	    <div class="input-label">Opções</div>
+	    <select ng-model="solicitaOpcao"  id="solicitaOpcao" ng-change="opcaoSolicitacao()">
+	      <option ng-repeat='o in solicitaOpcoes'>{{o}}</option>
+	    </select>
+  	</label>
 	</div>
 
-	<button class="button button-full button-assertive" ng-click='limpar()'>
+	<button class="button button-full button-positive" ng-click='limpar()' ng-show="showLimpar">
   	Limpar
 	</button>
 
-	<button class="button button-full button-assertive" ng-click=apoiar()>
+	<button class="button button-full button-positive" ng-click=apoiar() ng-show="showApoio">
   	Apoio
 	</button>
 
-	<button class="button button-full button-assertive">
+	<button class="button button-full button-positive" ng-click=iniciar() ng-show="showInicio">
+  	Inicio
+	</button>
+
+	<button class="button button-full button-positive" ng-show="showSalvar">
   	Salvar
 	</button>
 
-	<button class="button button-full button-assertive" ng-click="encerrar()">
+	<button class="button button-full button-positive" ng-click="encerrar()" ng-show="showEncerrar">
   	Encerrar
 	</button>
 

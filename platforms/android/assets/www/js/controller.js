@@ -137,7 +137,7 @@ angular.module('starter.controllers', [])
       $scope.clickInconformidade = false;
       $scope.clickConformidade = false;
       $scope.clickEncerrar = true;
-      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'VISTORIA']
+      $scope.listaEscolha = ['', 'CONFORMIDADE', 'INCONFORMIDADE', 'AUSENTE', 'PREPOSTO', 'TERCEIROS', 'VISTORIA','VER OS']
       $scope.clickSolicitar = false;
       
       if(factoryAgente.getChefe()){
@@ -174,45 +174,62 @@ angular.module('starter.controllers', [])
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }else if (document.getElementById('status').value == 'VISTORIA'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = true
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }else if (document.getElementById('status').value == 'SOLICITAR'){
             $scope.clickConformidade = false;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = true;
+            $scope.clickVisualisar = false;
         }else if (!document.getElementById('status').value){
             $scope.clickInconformidade = false;
             $scope.clickConformidade = false;
             $scope.clickEncerrar = true;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
+        }else if (document.getElementById('status').value == 'VER OS'){
+            $scope.clickConformidade = false;
+            $scope.clickInconformidade = false;
+            $scope.clickEncerrar = false;
+            $scope.clickVistoria = false;
+            $scope.clickSolicitar = false;
+            $scope.clickVisualisar = true;
         }else{
             $scope.clickConformidade = true;
             $scope.clickInconformidade = false;
             $scope.clickEncerrar = false;
             $scope.clickVistoria = false;
             $scope.clickSolicitar = false;
+            $scope.clickVisualisar = false;
         }
     };//fim do método selecionar
-
     var conformidade = function(){
       //vou aproveitar e atualizar o logado no objeto autorizado
       
-      var flag;
+     var flag;
       if(document.getElementById('status').value === 'INCONFORMIDADE'){
         flag = 'INCONFORME';
         factoryAutorizado.setEstado(flag);
       }else if(document.getElementById('status').value === 'CONFORMIDADE'){
         flag = 'CONFORME';
         factoryAutorizado.setEstado(flag);
-      }else {
+      }else if(document.getElementById('status').value === 'AUSENTE') {
         flag = 'AUSENTE';
+        factoryAutorizado.setEstado(flag);
+      }else if(document.getElementById('status').value === 'PREPOSTO') {
+        flag = 'PREPOSTO';
+        factoryAutorizado.setEstado(flag);
+      }else if(document.getElementById('status').value === 'TERCEIROS') {
+        flag = 'TERCEIROS';
         factoryAutorizado.setEstado(flag);
       }
 
@@ -266,12 +283,65 @@ angular.module('starter.controllers', [])
       $state.go('solicitacao');
     }
 
+      $scope.visualisar = function(){
+      $state.go('numero');
+    }
+
 }])
 
 .controller('solicitacaoCtrl', ['$scope','$state', 'apoioFactory', function($scope, $state, apoioFactory){
   $scope.hora = ['','00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
   $scope.bairros = ['','Abolição', 'Acari',' Água Santa', 'Alto da Boa Vista', 'Anchieta', 'Andaraí', 'Anil', 'Bancários', 'Bangu', 'Barra da Tijuca', 'Barra de Guaratiba', 'Barros Filho', 'Benfica', 'Bento Ribeiro', 'Bonsucesso', 'Botafogo', 'Brás de Pina', 'Cachambi', 'Cacuia', 'Caju','Camorim', 'Campinho', 'Campo dos Afonsos', 'Campo Grande', 'Cascadura', 'Catete', 'Catumbi', 'Cavalcanti', 'Centro', 'Cidade de Deus', 'Cidade Nova', 'Cidade Universitária', 'Cocotá', 'Coelho Neto', 'Colégio', 'Complexo do Alemão', 'Copacabana', 'Cordovil', 'Cosme Velho', 'Cosmos', 'Costa Barros', 'Curicica', 'Del Castilho', 'Deodoro', 'Encantado', 'Engenheiro Leal', 'Engenho da Rainha', 'Engenho de Dentro', 'Engenho Novo', 'Estácio', 'Flamengo', 'Freguesia - IG', 'Freguesia - JPG', 'Galeão', 'Gamboa', 'Gardênia Azul', 'Gávea', 'Gericinó', 'Glória', 'Grajaú', 'Grumari', 'Guadalupe', 'Guaratiba', 'Higienópolis', 'Honório Gurgel', 'Humaitá', 'Inhaúma', 'Inhoaíba', 'Ipanema', 'Irajá', 'Itanhangá', 'Jacaré', 'Jacarepaguá', 'Jacarezinho', 'Jardim América', 'Jardim Botânico', 'Jardim Carioca', 'Jardim Guanabara', 'Jardim Sulacap', 'Joá', 'kosmos', 'Lagoa', 'Lapa', 'Laranjeiras', 'Leblon', 'Leme', 'Lins de Vasconcelos', 'Madureira', 'Magalhães Bastos', 'Mangueira', 'Manguinhos', 'Maracanã', 'Maré', 'Marechal Hermes', 'Maria da Graça', 'Méier', 'Moneró', 'Olaria', 'Oswaldo Cruz', 'Paciência', 'Padre Miguel', 'Paquetá', 'Parada de Lucas', 'Parque Anchieta', 'Parque Columbia', 'Pavuna', 'Pechincha', 'Pedra de Guaratiba', 'Penha', 'Penha Circular', 'Piedade', 'Pilares', 'Pitangueiras', 'Portuguesa', 'Praça da Bandeira', 'Praça Seca', 'Praia da Bandeira', 'Quintino Bocaiúva', 'Ramos', 'Realengo', 'Recreio dos Bandeirantes', 'Riachuelo', 'Ribeira', 'Ricardo de Albuquerque', 'Rio Comprido', 'Rocha', 'Rocha Miranda', 'Rocinha', 'Sampaio', 'Santa Cruz', 'Santa Teresa', 'Santíssimo', 'Santo Cristo', 'São Conrado', 'São Cristóvão', 'São Francisco Xavier', 'Saúde', 'Senador Camará', 'Senador Vasconcelos', 'Sepetiba', 'Tanque', 'Taquara', 'Tauá', 'Tijuca', 'Todos os Santos', 'Tomás Coelho', 'Turiaçu', 'Urca', 'Vargem Grande', 'Vargem Pequena', 'Vasco da Gama', 'Vaz Lobo', 'Vicente de Carvalho', 'Vidigal', 'Vigário Geral', 'Vila Cosmos', 'Vila da Penha', 'Vila Isabel', 'Vila Militar', 'Vila Valqueire', 'Vista Alegre', 'Zumbi']
   $scope.motivos = ['', 'Notificação', 'Multa', 'Fisc. Autorizados', 'Desocupação', 'Ret. Equipametos']
+  $scope.solicitaOpcoes = ['', 'limpar', 'escolher apoio', 'salvar', 'sair','inicio']
+  $scope.showLimpar = false;
+  $scope.showApoio = false;
+  $scope.showInicio = false;
+  $scope.showSalvar = false;
+  $scope.showEncerrar = false;
+
+  $scope.opcaoSolicitacao = function(){
+    var opt = document.getElementById('solicitaOpcao').value
+    if(opt.length > 1){
+      if(opt === 'limpar'){
+        $scope.showLimpar = true;
+        $scope.showApoio = false;
+        $scope.showInicio = false;
+        $scope.showSalvar = false;
+        $scope.showEncerrar = false;
+      }else if(opt === 'escolher apoio'){
+        $scope.showLimpar = false;
+        $scope.showApoio = true;
+        $scope.showInicio = false;
+        $scope.showSalvar = false;
+        $scope.showEncerrar = false;
+      }else if(opt === 'salvar'){
+        $scope.showLimpar = false;
+        $scope.showApoio = false;
+        $scope.showInicio = false;
+        $scope.showSalvar = true;
+        $scope.showEncerrar = false;
+      }else if(opt === 'sair'){
+        $scope.showLimpar = false;
+        $scope.showApoio = false;
+        $scope.showInicio = false;
+        $scope.showSalvar = false;
+        $scope.showEncerrar = true;
+      }else if(opt === 'inicio'){
+        $scope.showLimpar = false;
+        $scope.showApoio = false;
+        $scope.showInicio = true;
+        $scope.showSalvar = false;
+        $scope.showEncerrar = false;
+      }
+    }else{
+        $scope.showLimpar = false;
+        $scope.showApoio = false;
+        $scope.showInicio = false;
+        $scope.showSalvar = false;
+        $scope.showEncerrar = false;
+    }
+  }
 
   function limpar(){
     document.getElementById('hora').selectedIndex = 0;
@@ -290,9 +360,13 @@ angular.module('starter.controllers', [])
     apoioFactory.zeraPosicao();
   }
 
+  $scope.iniciar = function(){
+    $state.go('assentamento');
+  }
+
   $scope.encerrar = function(){
       ionic.Platform.exitApp();
-    }
+  }
 
   //document.getElementById('artigo').selectedIndex = 0;
 

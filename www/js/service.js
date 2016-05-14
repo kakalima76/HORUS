@@ -237,3 +237,23 @@ return {
 }
 
 }])
+
+.factory('inscricaofactory', [function(){
+  //Construído temporariamente para acomodar a inscr. municipal
+  var inscricao = '';
+
+   var set = function(value){
+    inscricao = value;
+   } 
+
+   var get = function(){
+    return inscricao;
+   }
+
+   return {
+    set: set,
+    get: get
+
+   }
+
+}])

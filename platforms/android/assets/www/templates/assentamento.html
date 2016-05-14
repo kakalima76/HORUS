@@ -3,7 +3,7 @@
       <h1 class="title"><center>ORDEM DE SERVIÇO Nº {{titulo}}</center></h1>
     </ion-header-bar>
     <div></div>
-      <ion-content>
+      <ion-content class="corpo">
 
         <div class="list list-inset">
             <label class="item item-input">
@@ -11,11 +11,11 @@
             </label>
 
 
-            <button class="button button-full button-assertive" ng-click='buscar()' ng-disabled='proteger'>
+            <button class="button button-full button-positive" ng-click='buscar()' ng-disabled='proteger'>
             buscar
             </button>
             
-            <button class="button button-full button-assertive" ng-click="limpar()">
+            <button class="button button-full button-positive" ng-click="limpar()">
             limpar
             </button>
 
@@ -46,24 +46,28 @@
                 </label>
             </div>
 
-            <button class="button button-full button-assertive"  ng-show='clickInconformidade' ng-click='multar()'>
+            <button class="button button-full button-positive"  ng-show='clickInconformidade' ng-click='multar()'>
             Lançar infração
             </button>
 
-            <button class="button button-full button-assertive" ng-show='clickConformidade' ng-click='novaFiscalizacao()'>
+            <button class="button button-full button-positive" ng-show='clickConformidade' ng-click='novaFiscalizacao()'>
             Salvar
             </button>
 
-            <button class="button button-full button-assertive" ng-show='clickEncerrar' ng-click='encerrar()'>
+            <button class="button button-full button-positive" ng-show='clickEncerrar' ng-click='encerrar()'>
             Encerrar
             </button>
 
-             <button class="button button-full button-assertive" ng-show='clickVistoria' ng-click='vistoriar()'>
+             <button class="button button-full button-positive" ng-show='clickVistoria' ng-click='vistoriar()'>
             Vistoriar
             </button>
 
-             <button class="button button-full button-assertive" ng-show='clickSolicitar' ng-click='solicitar()'>
+             <button class="button button-full button-positive" ng-show='clickSolicitar' ng-click='solicitar()'>
             Solicitar
+            </button>
+
+            <button class="button button-full button-positive" ng-show='clickVisualisar' ng-click='visualisar()'>
+            Ver OS
             </button>
 
 
