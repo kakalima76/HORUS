@@ -148,9 +148,14 @@ angular.module('starter.controllers', [])
       
     $scope.buscar = function(){
 
-        document.getElementById('titular').value = 'carregando...'
+          var promise = factoryAutorizado.extrair(document.getElementById('im').value);
 
-          factoryAutorizado.extrair(document.getElementById('im').value);
+          promise.catch(function(){
+            $scope.proteger = false;
+            document.getElementById('im').value = '';
+            alert('Informe uma IM válida!');
+          })
+
           factoryLocaliza.localiza();
           $scope.proteger = true;
 
@@ -274,10 +279,6 @@ angular.module('starter.controllers', [])
       $state.go('multas');      
     };//fim do método multar
 
-    $scope.testar = function(){
-      //teste
-        //loginFactory.logar();
-    };//fim do método testar
 
     $scope.vistoriar = function(){
     factoryLocaliza.localiza();
@@ -506,7 +507,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.factory('factoryAutorizado', function(){
+.factory('factoryAutorizado', ['$q', '$ionicLoading', function($q, $ionicLoading){
    var autorizado = 
     {
       nome: '', 
@@ -556,6 +557,11 @@ angular.module('starter.controllers', [])
     }
 
     var extrair = function(value){
+      return $q(function(resolve, reject){
+        $ionicLoading.show({
+          template: 'Loading...'
+        })
+
       $.ajax(
             {
                     url: 'http://scca.rio.rj.gov.br/index.php/online?im=' + value,
@@ -574,6 +580,7 @@ angular.module('starter.controllers', [])
                                 var statusTitular = headline.match(regexStatus);
                                 var tuap = headline.match(regexTuap);
                                   if(nome){
+                                      resolve($ionicLoading.hide())
                                       document.getElementById('titular').value = nome[0].replace('Nome', '').replace('Data', '').trim();
                                       var titular = nome[0].replace('Nome', '').replace('Data', '').trim();
                                       var cpf = cpfTitular[0].replace('CPF', '').trim();
@@ -589,10 +596,11 @@ angular.module('starter.controllers', [])
                                           }
 
                                     }else{
-                                      alert('IM não localizada!\nClique em Limpar para prosseguir.');
+                                      reject($ionicLoading.hide())
                                     }                                                           
                     }//fim do callback sucess
            });//fim do método ajax
+        });//fim do $q
     }//fim mo método extrair
 
 
@@ -667,5 +675,5 @@ angular.module('starter.controllers', [])
       setPontos: setPontos
     }
 
-});
+}]);
 
