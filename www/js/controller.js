@@ -152,6 +152,7 @@ angular.module('starter.controllers', [])
 
           promise.catch(function(){
             $scope.proteger = false;
+            document.getElementById('im').focus();
             document.getElementById('im').value = '';
             alert('Informe uma IM válida!');
           })
