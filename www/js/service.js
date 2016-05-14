@@ -43,7 +43,7 @@ angular.module('starter.service', [])
 
 })
 
-.factory('loginFactory', ['$http', 'factoryAgente', '$state', function($http, factoryAgente, $state){
+.factory('loginFactory', ['$q','$ionicLoading', '$http', 'factoryAgente', '$state', function($q, $ionicLoading, $http, factoryAgente, $state){
     var agentes = '';
     var get = function(){
       return agentes;
@@ -54,11 +54,16 @@ angular.module('starter.service', [])
     }
 
     var logar = function(){
-      var agentes;
+      return $q(function(resolve, reject){
+          var agentes;
       var logado;
 
+      $ionicLoading.show({
+       template: 'Logando...'
+      })
 
       $http.get('http://ccuanexos.herokuapp.com/agentes/').then(function(res){
+      resolve($ionicLoading.hide());  
       var agentes = res.data;
       var data = new Date();
       var dia = data.getDate();
@@ -90,7 +95,7 @@ angular.module('starter.service', [])
      }//fim do método login
 
      logado = agentes.filter(login);
-     if(logado.length)
+     if(logado.length > 0)
       {
         factoryAgente.set(logado[0].nome, logado[0].matricula, logado[0].ordem, logado[0].data, logado[0].chefe);
         $state.go('assentamento');
@@ -99,8 +104,13 @@ angular.module('starter.service', [])
       }
 
       }), function(err){
-        console.error('Erro');
+        reject($ionicLoading.hide());
       }
+
+
+      })
+
+      
 
     }//fim do método logar
 

@@ -559,7 +559,7 @@ angular.module('starter.controllers', [])
     var extrair = function(value){
       return $q(function(resolve, reject){
         $ionicLoading.show({
-          template: 'Loading...'
+          template: 'Buscando...'
         })
 
       $.ajax(
