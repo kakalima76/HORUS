@@ -1,55 +1,92 @@
 angular.module('starter.controllers', [])
 
-.controller('multasCtrl', ['$scope', 'factoryAutorizado', '$state', 'tipificaService', 'loginFactory', 'factoryPontos', function($scope, factoryAutorizado, $state, tipificaService, loginFactory, factoryPontos){
-      $scope.titulo = 'INSC. MUNICIPAL: ' + factoryAutorizado.getIM();
-      $scope.lista = '';
-      $scope.multa = '';
+.controller('multasCtrl', ['$ionicPopup', '$scope', 'factoryAutorizado', '$state', 'loginFactory', 'factoryPontos', function($ionicPopup, $scope, factoryAutorizado, $state, loginFactory, factoryPontos){
+  $scope.apoio = 'templates/artigos.html';
+  $scope.artigos = ['', 47, 54];
+  $scope.incisos =
+  [
 
-      $scope.add = function(){
-          var artigo = document.getElementById("artigo").value;
-          var inciso = document.getElementById("inciso").value;
-          var informa = tipificaService.listar(artigo, inciso);
-          if(informa.length > 0){
-            $scope.pontos = informa[0].pontos;
-            $scope.multa = '(artigo: ' + artigo   + ' inciso: ' + inciso + ')';
-            $scope.lista = 
-            {
-                artigo: 'Artigo: ' + artigo + ' Inciso: ' + inciso,
-                texto: informa[0].texto,
-                valor: 'Valor: ' + informa[0].valor,
-                pontos: 'Pontos: ' + informa[0].pontos
-            }
+            {artigo: '47', inciso: 'II',  texto: 'Mercadejar em desacordo com os termos de sua autorização.', valor: 'R$ 391,50', pontos: 2},
+            {artigo: '47', inciso: 'III',   texto: 'Não se apresentar em rigorosas condições de asseio.', valor: 'R$ 391,50', pontos: 2},
+            {artigo: '47', inciso: 'IV',  texto: 'Apresentar-se em veículo ou unidade autorizada em mau estado de conservação ou em condições precárias de higiene.', valor: 'R$ 783,00', pontos: 2},
+            {artigo: '47', inciso: 'V',   texto: 'Não manter limpo o local de estacionamento.', valor: 'R$ 783,00', pontos: 2},
+            {artigo: '47', inciso: 'VI',  texto: 'Utilizar buzinas, campainhas e outros meios ruidosos de propaganda.', valor: 'R$ 391,50', pontos: 2},
+            {artigo: '47', inciso: 'VII',   texto: 'Não apresentar, quando exigidos, quaisquer dos documentos a que se refere o artigo 56 desta Lei.', valor: 'R$ 391,50', pontos: 2},
+            {artigo: '47', inciso: 'VIII',  texto: 'Não manter, em local visível, a tabela de preços dos produtos comercializados exigida pelo art. 57 desta Lei.', valor: 'R$ 391,50', pontos: 2},
+            {artigo: '47', inciso: 'IX',  texto: 'Comercializar produtos proibidos por esta Lei.', valor: 'R$ ', pontos: 5},
+            {artigo: '47', inciso: 'X',   texto: 'Perturbação da ordem pública, falta de urbanidade, incontinência pública.', valor: 'R$ 1566,00', pontos: 5},
+            {artigo: '47', inciso: 'XI',  texto: 'Uso de caixotes como assento ou para exposição de mercadoria sobre o passeio.', valor: 'R$ 391,50', pontos: 5},
+            {artigo: '47', inciso: 'XII',   texto: 'Prejuízo do fluxo de pedestre na calçada.', valor: 'R$ 783,0', pontos: 5},
+            {artigo: '47', inciso: 'XIII',  texto: 'Ocupação não autorizada de área pública por qualquer equipamento fixo ou móvel diferente de tabuleiro, carrocinha e triciclo.', valor: 'R$ 3915,00', pontos: 2},
+            {artigo: '54', inciso: 'I',   texto: 'Perturbação da ordem pública, falta de urbanidade, incontinência pública, prática de crime ou contravenção no local do ponto fixo.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'II',  texto: 'Permanência em local diferente do autorizado.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'III',   texto: 'Mudança do ponto fixo sem prévia autorização.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'IV',  texto: 'Inobservância do Regulamento Sanitário.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'V',   texto: 'Uso de caixotes como assento ou para exposição de mercadorias sobre o passeio.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'VI',  texto: 'Impedimento do livre trânsito nos passeios.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'VII',   texto: 'Venda de mercadoria não permitida nesta Lei.', valor: 'R$ R$ 391,50', pontos: 5},
+            {artigo: '54', inciso: 'VIII',  texto: 'Venda de mercadoria não autorizada.', valor: 'R$ R$ 391,50', pontos: 5}
+    ];
+
+   //reseta os campos do checkbox
+  function zera(){
+    $scope.incisos.forEach(function(value){
+      value.checked = false;
+    })
+  }
+
+
+
+  $scope.imprimir = function(){
+    var soma = 0; //soma os pontos das autuações
+    var multas = ''; //auto esplicativa
+    var count = 0; //conta as autuações
+    function filtro(value){
+      if(value.checked === true){
+        return true;
+      }
+    }
+    
+    //seleciona apenas as autuações ticadas
+    var res = $scope.incisos.filter(filtro)
+    
+    res.forEach(function(value){
+      count += 1;
+      soma += value.pontos;
+      multas += '{artigo: ' + value.artigo + ', inciso:' + "'" + value.inciso + "'" + '},';
+    })
+
+          if(soma > 0){
+
+                if(count === 1){
+                  var confirmPopup = $ionicPopup.confirm({
+                  title: 'Salvar Registro',
+                  template: 'Confirma apenas uma autuação?'
+                  });
+                }else{
+                  var confirmPopup = $ionicPopup.confirm({
+                  title: 'Salvar Registro',
+                  template: 'Confirma as ' + count + ' autuações?'
+                  });
+                }
+             
+             confirmPopup.then(function(res) {
+             if(res) {
+                  multas = multas.substring(0,multas.length - 1);
+                  factoryAutorizado.setPontos(soma);
+                  factoryAutorizado.setMulta(multas);
+                  loginFactory.criar(factoryAutorizado.get());
+                  zera();
+                  $state.go('assentamento');
+                }
+           });
+
+          }else{
+            alert('Opções em branco.')
           }
-          
+  }//fim da função imprimir
 
-      }
 
-      $scope.clear = function(){//atual savalr()
-          loginFactory.criar(factoryAutorizado.get());
-          $scope.multa = '';
-          $scope.lista = '';
-          document.getElementById('artigo').selectedIndex = 0;
-          document.getElementById('inciso').selectedIndex = 0;
-          $state.go('assentamento');
-          
-      }
-
-      $scope.confirm = function(){
-          var artigo = document.getElementById("artigo").value;
-          var inciso = document.getElementById("inciso").value;
-          var informa = tipificaService.listar(artigo, inciso);
-          if(informa.length > 0){
-            $scope.pontos += factoryPontos.getPontos();
-            factoryPontos.setPontos($scope.pontos);
-            factoryAutorizado.setMulta($scope.multa);
-            factoryAutorizado.setPontos($scope.pontos);
-            alert("Inseridas com sucesso.");       
-          }
-      }
-
-      $scope.exit = function(){
-        return navigator.app.exitApp()
-      }
 
 
 }])
@@ -133,6 +170,7 @@ angular.module('starter.controllers', [])
 
 
 .controller('assentamentoCtrl', ['inscricaofactory', '$scope', 'factoryAutorizado', '$state', 'tipificaService', 'loginFactory', 'factoryAgente', 'factoryLocaliza', 'factoryPontos', function(inscricaofactory, $scope,  factoryAutorizado, $state, tipificaService, loginFactory, factoryAgente, factoryLocaliza, factoryPontos){
+      
       $scope.titulo = factoryAgente.getOrdem();
       $scope.clickInconformidade = false;
       $scope.clickConformidade = false;
@@ -628,7 +666,7 @@ angular.module('starter.controllers', [])
     }
 
     var setPontos = function(value){
-      return autorizado.pontos = value;
+      autorizado.pontos = value;
     }
 
     var getPontos = function(){
@@ -636,7 +674,7 @@ angular.module('starter.controllers', [])
     }
 
     var setEstado = function(value, nome, matricula, ordem, data){
-      return  autorizado.conformidade = value;
+      autorizado.conformidade = value;
 
     }
 
